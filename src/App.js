@@ -1,10 +1,9 @@
-import "./App.css";
 import {
-  BrowserRouter,
+  BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
-  Link,
+  NavLink,
   useParams,
 } from "react-router-dom";
 
@@ -12,32 +11,37 @@ const Home = (props) => {
   console.log(props);
   return <div>Home</div>;
 };
-
 const About = () => <div>About</div>;
-
-const NotFound = () => <div>Not Found</div>;
-
-const User = ({ match }) => {
-  // const params = useParams();
-
-  return <div> Usuario con id: {match.params.userId}</div>;
+const User = () => {
+  const params = useParams();
+  return <div>Usuario con id: {params.userId}</div>;
 };
+const NotFound = () => <div>Not Found</div>;
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <div>
-        <Link to="/">Home</Link>
+        <NavLink exact activeClassName="active" to="/">
+          Home
+        </NavLink>
         <br />
-        <Link to="/about">About</Link>
+        <NavLink exact activeClassName="active" to="/about">
+          About
+        </NavLink>
       </div>
-      <switch>
-        <Route exact path="/" component={Home} />
+      <Switch>
         <Route exact path="/about" component={About} />
-        <Route component={NotFound} />
+        <Redirect exact path="/acerca-de" to="/about" />
+        <Route exact path="/" component={Home} />
         <Route exact path="/user/:userId" component={User} />
-      </switch>
-    </BrowserRouter>
+
+        <Route exact path="/" component={Home} />
+
+        <Route component={NotFound} />
+        {/* <Redirect to="/" /> */}
+      </Switch>
+    </Router>
   );
 }
 
